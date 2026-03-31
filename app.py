@@ -1,7 +1,7 @@
 import os
 import json
 import random
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -73,12 +73,12 @@ def handle_task():
         "status": "success",
         "enhanced_prompt": enhanced_prompt.strip(),
         "image_url": image_url,
-        "message": f"Here is your real-time branded illustration for: {user_query}"
+        "message": f"Here is your real-time branded illustration for: {user_prompt}"
     })
 
 @app.route('/', methods=['GET'])
 def home():
-    return "Cymbal Stadiums Illustration Agent is LIVE on Render!", 200
+    return render_template('index.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

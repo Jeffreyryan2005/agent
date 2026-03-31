@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cymbal Stadiums | Illustration Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #BF40BF;
+            --primary-green: #DAF7A6;
+            --dark-bg: #0f172a;
+            --card-glass: rgba(255, 255, 255, 0.05);
+            --border-glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(280, 50%, 20%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(100, 50%, 20%, 1) 0, transparent 50%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.05rem;
+            background: linear-gradient(to right, var(--primary-purple), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-badge {
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .hero {
+            text-align: center;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .generator-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-glass);
+            border-radius: 1rem;
+            padding: 1.25rem 1.5rem;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 4px rgba(191, 64, 191, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary-purple), #8e24aa);
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(191, 64, 191, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(191, 64, 191, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-container {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .image-preview {
+            width: 100%;
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+            position: relative;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .image-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #475569;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .enhanced-prompt-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            border-left: 4px solid var(--primary-green);
+        }
+
+        .enhanced-prompt-card h3 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .enhanced-prompt-card p {
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--primary-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        footer {
+            padding: 4rem 2rem;
+            color: #475569;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .result-container {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">CYMBAL STADIUMS</div>
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            Agent Live
+        </div>
+    </nav>
+
+    <main>
+        <div class="hero">
+            <h1>Branded Illustration Agent</h1>
+            <p>Generate on-brand, "Corporate Memphis" style illustrations for your stadium reports and maintenance updates.</p>
+        </div>
+
+        <div class="generator-card">
+            <div class="input-group">
+                <input type="text" id="userPrompt" placeholder="Describe what you want to illustrate (e.g., Stadium Maintenance)...">
+                <button id="generateBtn" onclick="generateIllustration()">Generate Illustration</button>
+            </div>
+
+            <div id="loader" style="display: none; flex-direction: column; align-items: center; gap: 1rem;">
+                <div class="loading-spinner" style="display: block;"></div>
+                <p style="color: #94a3b8;">Gemini is enhancing your prompt and generating pixels...</p>
+            </div>
+
+            <div class="result-container" id="resultContainer">
+                <div class="image-preview">
+                    <div id="imagePlaceholder" class="image-placeholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        <span>Generating Image...</span>
+                    </div>
+                    <img id="generatedImage" src="" alt="Generated Illustration">
+                </div>
+                <div class="enhanced-prompt-card">
+                    <h3>Enhanced Brand Prompt</h3>
+                    <p id="enhancedPromptText">Your prompt enhanced with Cymbal Stadiums brand guidelines will appear here.</p>
+                    <div style="margin-top: 2rem; color: #475569; font-size: 0.875rem;">
+                        <p><strong>Style:</strong> Corporate Memphis</p>
+                        <p><strong>Colors:</strong> #BF40BF, #DAF7A6</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Cymbal Stadiums. Built with Gemini AI & Pollinations.ai
+    </footer>
+
+    <script>
+        async function generateIllustration() {
+            const prompt = document.getElementById('userPrompt').value;
+            if (!prompt) return;
+
+            const btn = document.getElementById('generateBtn');
+            const loader = document.getElementById('loader');
+            const resultContainer = document.getElementById('resultContainer');
+            const img = document.getElementById('generatedImage');
+            const placeholder = document.getElementById('imagePlaceholder');
+            const enhancedText = document.getElementById('enhancedPromptText');
+
+            btn.disabled = true;
+            loader.style.display = 'flex';
+            resultContainer.style.display = 'none';
+            img.style.display = 'none';
+            placeholder.style.display = 'flex';
+
+            try {
+                const response = await fetch('/task', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    enhancedText.textContent = data.enhanced_prompt;
+                    img.src = data.image_url;
+                    
+                    // Preload image
+                    img.onload = () => {
+                        loader.style.display = 'none';
+                        resultContainer.style.display = 'grid';
+                        img.style.display = 'block';
+                        placeholder.style.display = 'none';
+                        btn.disabled = false;
+                    };
+                } else {
+                    alert('Error generating illustration');
+                    btn.disabled = false;
+                    loader.style.display = 'none';
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Connection error');
+                btn.disabled = false;
+                loader.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
